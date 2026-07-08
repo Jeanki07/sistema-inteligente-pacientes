@@ -1,235 +1,357 @@
-# ⚽ MODELO MUNDIAL 2026 - COMPETENCIA DE MODELOS Y CONTEXTO COMPETITIVO
+# Sistema Inteligente de Gestión de Pacientes con Predicción Bayesiana
 
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
-![Machine Learning](https://img.shields.io/badge/ML-ScikitLearn-F7931E?style=flat)
-![Project](https://img.shields.io/badge/Status-Active-success?style=flat)
-![Domain](https://img.shields.io/badge/Domain-Sports%20Analytics-blue?style=flat)
-![Type](https://img.shields.io/badge/System-Predictive%20Model-purple?style=flat)
+## Descripción general
 
-> Sistema de predicción de resultados del Mundial 2026 basado en modelos de regresión y contexto competitivo
+Este proyecto consiste en el desarrollo de un **Sistema Inteligente de Gestión de Pacientes**, implementado en Python, que permite registrar pacientes, doctores, síntomas, diagnósticos y tratamientos. Además, incorpora un módulo de **predicción bayesiana** para estimar enfermedades probables a partir de los síntomas ingresados por el usuario.
 
----
+El sistema fue desarrollado como proyecto académico del curso **Programación Orientada a Objetos Avanzada**, aplicando conceptos como encapsulamiento, herencia simple, herencia múltiple, polimorfismo, métodos especiales, propiedades, descriptores, decoradores, metaclases y patrones de diseño.
 
-# 📄 ABSTRACT
+El proyecto pertenece al dominio de la medicina, ya que trabaja con entidades como pacientes, doctores, enfermedades, síntomas, signos vitales y tratamientos.
 
-Este proyecto construye un sistema de predicción de resultados para el Mundial 2026 basado en múltiples modelos de regresión.  
-El sistema estima goles esperados por partido, evalúa distintos modelos predictivos y posteriormente ajusta las predicciones mediante un componente de contexto competitivo asociado a la fase de grupos.
-
-El objetivo es generar:
-
-- probabilidades de resultado (victoria local, empate, victoria visitante)  
-- estimación de marcadores más probables  
-- simulación de clasificación a la siguiente fase del torneo  
-
-El modelo integra información histórica, ranking FIFA, Elo y dinámica competitiva.
+> **Nota importante:** este sistema tiene finalidad académica. La predicción generada no reemplaza el diagnóstico de un profesional de salud.
 
 ---
 
-## 🏛️ Arquitectura del Sistema
+## Problemática
 
-Este sistema sigue una arquitectura modular de machine learning con múltiples capas de procesamiento.
+En muchos contextos médicos o académicos, el registro de pacientes, síntomas, diagnósticos y tratamientos puede realizarse de forma manual o poco estructurada. Esto puede generar problemas como:
 
-```mermaid
-graph TB
+- Dificultad para organizar información de pacientes.
+- Pérdida o duplicidad de registros.
+- Falta de control sobre diagnósticos y tratamientos.
+- Dificultad para consultar síntomas relacionados con enfermedades.
+- Ausencia de una herramienta computacional que oriente posibles enfermedades según los síntomas registrados.
 
-    %% DATA SOURCES
-    A[📊 Data Sources] --> A1[results.csv]
-    A --> A2[fifa_ranking.csv]
-    A --> A3[elo_ranking.csv]
-    A --> A4[fixtures_2026.csv]
+Además, cuando un paciente presenta varios síntomas al mismo tiempo, puede ser difícil identificar de manera rápida qué enfermedad podría estar asociada. Por ello, se plantea un sistema que no solo gestione información médica básica, sino que también utilice un modelo probabilístico para apoyar la identificación de enfermedades probables.
 
-    %% DATA PROCESSING
-    A --> B[⚙️ Data Processing Layer]
-    B --> B1[01_construir_data_modelo.py]
-
-    %% CONTEXT ENGINEERING
-    B --> C[🎯 Context Engineering Layer]
-    C --> C1[05_crear_contexto_grupos.py]
-
-    %% MODEL TRAINING
-    C --> D[🧠 Model Training Layer]
-    D --> D1[02_entrenar_predecir_modelos.py]
-
-    %% EVALUATION
-    D --> E[📈 Evaluation Layer]
-    E --> E1[competencia_modelos.csv]
-    E --> E2[mejor_modelo.txt]
-
-    %% PREDICTION ENGINE
-    E --> F[⚽ Prediction Engine]
-    F --> F1[Poisson + Dixon-Coles]
-
-    %% VISUALIZATION
-    F --> G[📊 Visualization Layer]
-    G --> G1[03_visualizar_partido_modelos.py]
-
-    %% CLASSIFICATION SIMULATION
-    G --> H[🏆 Classification Engine]
-    H --> H1[06_predecir_clasificados.py]
-    H --> H2[tabla_grupos_predicha.csv]
-    H --> H3[clasificados_16avos.csv]
-
-    %% OUTPUTS
-    H --> I[📦 Outputs]
-    I --> I1[top10_marcadores.csv]
-    I --> I2[predicciones_fixture.csv]
-
-```
 ---
 
-# 🏗️ METHODOLOGY (PIPELINE GENERAL)
-```
-DATA HISTÓRICA
-↓
-FEATURE ENGINEERING
-↓
-ENTRENAMIENTO DE MODELOS
-↓
-PREDICCIÓN DE GOLES (λ_home, λ_away)
-↓
-EVALUACIÓN (MAE, RMSE, R2)
-↓
-SELECCIÓN DEL MEJOR MODELO
-↓
-AJUSTE POR CONTEXTO COMPETITIVO
-↓
-POISSON + DIXON-COLES → PROBABILIDADES FINALES
-↓
-SIMULACIÓN DE CLASIFICACIÓN (FASE DE GRUPOS)
-↓
-DETERMINACIÓN DE CLASIFICADOS A SIGUIENTE FASE
-```
+## Solución propuesta
+
+La solución consiste en desarrollar un sistema en Python que permita:
+
+- Registrar pacientes normales.
+- Registrar pacientes críticos.
+- Registrar doctores.
+- Agregar síntomas a un paciente.
+- Buscar síntomas dentro de la base de datos médica.
+- Realizar una predicción bayesiana de enfermedades.
+- Registrar diagnósticos probables.
+- Asignar tratamientos.
+- Registrar signos vitales.
+- Guardar información en formato JSON.
+
+El sistema utiliza archivos CSV con información médica traducida al español. De esta manera, el usuario puede ingresar síntomas como:
+
+- fatiga
+- fiebre alta
+- dolor de cabeza
+- tos
+- náuseas
+- dolor abdominal
+
+Luego, el sistema compara esos síntomas con la data médica y calcula las enfermedades más probables.
+
 ---
 
-## 📁 **Estructura del Proyecto**
+## Metodología aplicada: CRISP-DM
 
+El desarrollo del proyecto se organizó siguiendo la metodología **CRISP-DM**, utilizada en proyectos basados en datos.
+
+### 1. Comprensión del problema
+
+Se identificó la necesidad de construir un sistema que permita gestionar pacientes y utilizar síntomas como evidencia para estimar enfermedades probables.
+
+### 2. Comprensión de los datos
+
+Se analizaron dos archivos CSV:
+
+- `DiseaseAndSymptoms_ES.csv`: contiene enfermedades y síntomas asociados.
+- `Disease_precaution_ES.csv`: contiene precauciones recomendadas según la enfermedad.
+
+### 3. Preparación de los datos
+
+La data original fue adaptada al español para mejorar la interacción del usuario con el sistema. También se normalizaron los textos para facilitar la búsqueda y comparación de síntomas.
+
+### 4. Modelado
+
+Se implementó un motor de predicción basado en **Naive Bayes**, donde:
+
+- La enfermedad es la clase a predecir.
+- Los síntomas son las evidencias.
+- El sistema calcula qué enfermedad es más probable según los síntomas ingresados.
+
+### 5. Evaluación
+
+El sistema se evaluó mediante casos de prueba como registro de pacientes, búsqueda de síntomas, predicción bayesiana, asignación de tratamientos y validación de signos vitales.
+
+### 6. Despliegue
+
+El sistema se ejecuta desde consola mediante un menú interactivo desarrollado en Python.
+
+---
+
+## Funcionamiento del sistema
+
+El flujo general del sistema es el siguiente:
+
+```text
+Inicio del programa
+        ↓
+Carga de data médica en español
+        ↓
+Registro de paciente o paciente crítico
+        ↓
+Registro de doctor
+        ↓
+Ingreso de síntomas
+        ↓
+Predicción bayesiana
+        ↓
+Registro del diagnóstico probable
+        ↓
+Asignación de tratamiento
+        ↓
+Guardado de información en JSON
 ```
-modelo regresion/
-│
-├── data/
-│   ├── results.csv
-│   ├── fifa_ranking.csv
-│   ├── elo_ranking.csv
-│   ├── fixtures_2026.csv
-│   ├── fixtures_2026_group_stage.csv
-│   ├── data_modelo.csv
-│   ├── fixtures_modelo.csv
-│   └── fixtures_contexto_grupos.csv
-│
-├── outputs/
-│   ├── competencia_modelos.csv
-│   ├── mejor_modelo.txt
-│   ├── modelo_home.pkl
-│   ├── modelo_away.pkl
-│   ├── predicciones_fixture.csv
-│   ├── predicciones_todos_modelos.csv
-│   ├── top10_marcadores.csv
-│   ├── top10_todos_modelos.csv
-│   ├── tabla_grupos_predicha.csv
-│   ├── clasificados_grupos.csv
-│   ├── mejores_terceros.csv
-│   ├── clasificados_16avos.csv
-│   ├── cruces_16avos_predichos.csv
-│   └── panel_tablas_grupos.png
-│
-├── 00_actualizar_results_mundial.py
-├── 01_construir_data_modelo.py
-├── 02_entrenar_predecir_modelos.py
-├── 03_visualizar_partido_modelos.py
-├── 04_mostrar_modelo_final.py
-├── 05_crear_contexto_grupos.py
-├── 06_predecir_clasificados.py
+
+---
+
+## Menú principal
+
+```text
+SISTEMA INTELIGENTE DE GESTIÓN DE PACIENTES
+
+1. Registrar paciente
+2. Registrar paciente crítico
+3. Registrar doctor
+4. Agregar síntomas a paciente
+5. Realizar predicción bayesiana
+6. Asignar tratamiento
+7. Registrar signos vitales de paciente crítico
+8. Mostrar pacientes
+9. Mostrar doctores
+10. Buscar síntomas en la data
+11. Guardar información en JSON
+12. Cargar caso de prueba
+0. Salir
+```
+
+---
+
+## Conceptos de Programación Orientada a Objetos aplicados
+
+### Clases y objetos
+
+El sistema está organizado mediante clases que representan entidades del dominio médico.
+
+Principales clases utilizadas:
+
+- `Persona`
+- `Paciente`
+- `Doctor`
+- `PacienteCritico`
+- `Monitoreo`
+- `ValidarRango`
+- `TratamientoBase`
+- `TratamientoMedicamento`
+- `TratamientoTerapia`
+- `TratamientoCirugia`
+- `TratamientoFactory`
+- `MotorBayes`
+- `RegistroMedicoCentral`
+- `PersistenciaJSON`
+
+### Encapsulamiento
+
+Se utiliza encapsulamiento para proteger atributos importantes, como el DNI de una persona, controlando su acceso mediante propiedades.
+
+### Herencia simple
+
+La clase `Paciente` y la clase `Doctor` heredan de la clase base `Persona`.
+
+```text
+Persona
+ ├── Paciente
+ └── Doctor
+```
+
+Esto evita duplicar atributos comunes como nombre, apellido y DNI.
+
+### Herencia múltiple
+
+La clase `PacienteCritico` hereda de `Paciente` y `Monitoreo`.
+
+```text
+PacienteCritico(Paciente, Monitoreo)
+```
+
+Esto permite que un paciente crítico tenga datos personales, síntomas, diagnósticos y también signos vitales como temperatura y ritmo cardiaco.
+
+### Polimorfismo
+
+El sistema aplica polimorfismo en los tratamientos. Todas las clases de tratamiento tienen el método `aplicar()`, pero cada una lo ejecuta de forma diferente.
+
+Ejemplos:
+
+- `TratamientoMedicamento`
+- `TratamientoTerapia`
+- `TratamientoCirugia`
+
+### Métodos dunder
+
+Se utilizan métodos especiales de Python para personalizar el comportamiento de los objetos:
+
+- `__str__()`: muestra información del objeto.
+- `__len__()`: devuelve la cantidad de tratamientos o registros.
+- `__eq__()`: compara objetos mediante el DNI.
+
+### Descriptores
+
+Se utiliza un descriptor para validar signos vitales, como temperatura y ritmo cardiaco. Esto evita ingresar valores fuera de rango.
+
+### Decoradores
+
+El sistema usa decoradores para registrar acciones importantes como consultas médicas y predicciones bayesianas.
+
+### Metaclases
+
+Se aplica una metaclase para controlar la creación de clases médicas y asegurar que algunas clases cumplan con métodos obligatorios.
+
+### Patrón Factory
+
+El patrón Factory se utiliza para crear tratamientos según la opción seleccionada por el usuario.
+
+### Patrón Singleton
+
+El patrón Singleton se aplica en el registro médico central, garantizando que exista una única instancia encargada de almacenar pacientes y doctores.
+
+---
+
+## Predicción bayesiana
+
+El sistema utiliza una versión simplificada de **Naive Bayes** para estimar enfermedades probables según los síntomas registrados.
+
+La idea general es:
+
+```text
+P(Enfermedad | Síntomas)
+```
+
+Esto significa calcular la probabilidad de una enfermedad dado que el paciente presenta ciertos síntomas.
+
+El sistema evalúa las enfermedades disponibles en la data y muestra las más probables ordenadas de mayor a menor probabilidad.
+
+---
+
+## Archivos del repositorio
+
+```text
+Sistema_Inteligente_Pacientes/
+├── sistema_inteligente_pacientes.py
+├── DiseaseAndSymptoms_ES.csv
+├── Disease_precaution_ES.csv
+├── README.md
 ├── requirements.txt
-└── README.txt
+└── .gitignore
 ```
 
 ---
-# ⚙️ REQUIREMENTS
+
+## Requisitos
+
+El sistema fue desarrollado con Python 3.
+
+No requiere librerías externas, ya que utiliza módulos estándar de Python, como:
+
+- `csv`
+- `json`
+- `math`
+- `pathlib`
+- `functools`
+- `unicodedata`
+
+---
+
+## Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone https://github.com/Jeanki07/sistema-inteligente-pacientes.git
 ```
+
+Entrar a la carpeta:
+
+```bash
+cd sistema-inteligente-pacientes
+```
+
+Instalar dependencias:
+
+```bash
 pip install -r requirements.txt
-numpy
-pandas
-scipy
-scikit-learn
-matplotlib
-joblib
 ```
 
 ---
-# 🚀 EXECUTION PIPELINE
+
+## Ejecución
+
+Ejecutar el sistema con:
+
+```bash
+python sistema_inteligente_pacientes.py
 ```
-1) cd "/home/jeanki/Escritorio/modelo regresion"
 
-2) python 00_actualizar_results_mundial.py
+O también:
 
-3) python 01_construir_data_modelo.py
-
-4) python 05_crear_contexto_grupos.py
-
-5) python 02_entrenar_predecir_modelos.py
-
-6) python 03_visualizar_partido_modelos.py (MATCH_ID = 60)
-
-7) python 04_mostrar_modelo_final.py
-
-8) python 06_predecir_clasificados.py
+```bash
+python3 sistema_inteligente_pacientes.py
 ```
+
 ---
 
-# 🤖 MODELOS
+## Ejemplo de uso
+
+1. Registrar un paciente.
+2. Registrar un doctor.
+3. Agregar síntomas al paciente.
+4. Realizar predicción bayesiana.
+5. Revisar las enfermedades probables.
+6. Asignar un tratamiento.
+7. Guardar la información.
+
+Ejemplo de síntomas:
+
+```text
+fatiga, fiebre alta, dolor de cabeza
 ```
-- Linear Regression
-- Ridge
-- Random Forest
-- Gradient Boosting
-- Poisson Regressor
-```
+
 ---
 
-# 📊 FEATURES
-```
-- home_gf12
-- home_ga12
-- home_pts12
-- ome_prev_matches
-- way_gf12
-- away_ga12
-- away_pts12
-- away_prev_matches
-- diff_fifa
-- diff_elo
-- h2h
-- neutral
-- home_advantage
-```
+## Resultados esperados
+
+El sistema debe mostrar una lista de enfermedades probables según los síntomas ingresados. También debe permitir registrar diagnósticos, asignar tratamientos y guardar información en un archivo JSON.
+
 ---
 
-# 🎯 CONTEXT
-```
-lambda_home_final = lambda_home_base * factor_contexto_home  
-lambda_away_final = lambda_away_base * factor_contexto_away  
+## Limitaciones
 
-- 1.15 = must win  
-- 0.90 = rotation  
-- 1.00 = neutral   
-```
+- La predicción depende de la calidad de la data utilizada.
+- El modelo Naive Bayes asume independencia entre síntomas.
+- El sistema no reemplaza la evaluación de un profesional de salud.
+- El proyecto tiene finalidad académica.
+
 ---
 
-# 📦 OUTPUTS
-```
--competencia_modelos.csv
--mejor_modelo.txt
--predicciones_fixture.csv
--top10_marcadores.csv
--tabla_grupos_predicha.csv
--clasificados_16avos.csv
--cruces_16avos_predichos.csv
-```
+## Autor
+
+**Frank Bustamante**  
+Universidad Nacional Toribio Rodríguez de Mendoza de Amazonas  
+Escuela Profesional de Ingeniería en Ciencia de Datos e Inteligencia Artificial
+
 ---
 
-# ⚠️ NOTE
-```
-El modelo no garantiza el resultado real de los partidos.
-Su objetivo es estimar probabilidades usando información histórica, forma reciente, 
-ranking, Elo, historial y contexto competitivo del grupo.
-```
+## Estado del proyecto
+
+Proyecto funcional para presentación académica.
