@@ -1,28 +1,74 @@
+<div align="center">
+
+# UNIVERSIDAD NACIONAL  
+# TORIBIO RODRÍGUEZ DE MENDOZA DE AMAZONAS
+
+## FACULTAD DE INGENIERÍA ZOOTECNISTA, BIOTECNOLOGÍA, AGRONEGOCIOS Y CIENCIA DE DATOS
+
+<br><br>
+
+## ESCUELA PROFESIONAL DE INGENIERÍA EN CIENCIA DE DATOS E INTELIGENCIA ARTIFICIAL
+
+### SEMESTRE ACADÉMICO: 2026-I
+
+<br>
+
+### NOMBRE DEL CURSO:
+
+## PROGRAMACIÓN ORIENTADA A OBJETOS AVANZADA
+
+<br>
+
+### TÍTULO DE LA ACTIVIDAD ACADÉMICA
+
+# SISTEMA INTELIGENTE DE GESTIÓN DE PACIENTES  
+# CON PREDICCIÓN BAYESIANA DE ENFERMEDADES
+
+<br>
+
+### ESTUDIANTES:
+
+## BUSTAMANTE VELA, Jean Frank  
+## SALON YNGA, Dangelo Emanuel  
+## MARREROS CORTEGANA, Miguel Angel
+
+<br>
+
+### DOCENTE DEL CURSO:
+
+## MSc. Abraham Sopla Maslucán
+
+<br>
+
+## Chachapoyas, 2026
+
+</div>
+
+---
+
 # Sistema Inteligente de Gestión de Pacientes con Predicción Bayesiana
 
 ## Descripción general
 
-Este proyecto consiste en el desarrollo de un **Sistema Inteligente de Gestión de Pacientes**, implementado en Python, que permite registrar pacientes, doctores, síntomas, diagnósticos y tratamientos. Además, incorpora un módulo de **predicción bayesiana** para estimar enfermedades probables a partir de los síntomas ingresados por el usuario.
+Este proyecto consiste en el desarrollo de un **Sistema Inteligente de Gestión de Pacientes**, implementado en Python, que permite registrar pacientes, doctores, síntomas, diagnósticos y tratamientos. Además, incorpora un módulo de predicción bayesiana para estimar enfermedades probables a partir de los síntomas ingresados por el usuario.
 
-El sistema fue desarrollado como proyecto académico del curso **Programación Orientada a Objetos Avanzada**, aplicando conceptos como encapsulamiento, herencia simple, herencia múltiple, polimorfismo, métodos especiales, propiedades, descriptores, decoradores, metaclases y patrones de diseño.
+El sistema fue desarrollado como proyecto académico del curso **Programación Orientada a Objetos Avanzada**, aplicando conceptos avanzados como encapsulamiento, herencia simple, herencia múltiple, polimorfismo, métodos especiales, propiedades, descriptores, decoradores, metaclases y patrones de diseño.
 
 El proyecto pertenece al dominio de la medicina, ya que trabaja con entidades como pacientes, doctores, enfermedades, síntomas, signos vitales y tratamientos.
-
-> **Nota importante:** este sistema tiene finalidad académica. La predicción generada no reemplaza el diagnóstico de un profesional de salud.
 
 ---
 
 ## Problemática
 
-En muchos contextos médicos o académicos, el registro de pacientes, síntomas, diagnósticos y tratamientos puede realizarse de forma manual o poco estructurada. Esto puede generar problemas como:
+En muchos contextos médicos o académicos, el registro de pacientes y síntomas puede realizarse de forma manual o poco estructurada. Esto genera problemas como:
 
 - Dificultad para organizar información de pacientes.
 - Pérdida o duplicidad de registros.
 - Falta de control sobre diagnósticos y tratamientos.
 - Dificultad para consultar síntomas relacionados con enfermedades.
-- Ausencia de una herramienta computacional que oriente posibles enfermedades según los síntomas registrados.
+- Ausencia de un apoyo computacional para orientar posibles enfermedades según los síntomas del paciente.
 
-Además, cuando un paciente presenta varios síntomas al mismo tiempo, puede ser difícil identificar de manera rápida qué enfermedad podría estar asociada. Por ello, se plantea un sistema que no solo gestione información médica básica, sino que también utilice un modelo probabilístico para apoyar la identificación de enfermedades probables.
+Además, cuando un paciente presenta varios síntomas al mismo tiempo, puede ser difícil identificar de manera rápida qué enfermedad podría estar asociada. Por ello, se propone un sistema que no solo registre información, sino que también utilice un modelo probabilístico para apoyar la identificación de enfermedades probables.
 
 ---
 
@@ -36,7 +82,7 @@ La solución consiste en desarrollar un sistema en Python que permita:
 - Agregar síntomas a un paciente.
 - Buscar síntomas dentro de la base de datos médica.
 - Realizar una predicción bayesiana de enfermedades.
-- Registrar diagnósticos probables.
+- Asignar diagnósticos.
 - Asignar tratamientos.
 - Registrar signos vitales.
 - Guardar información en formato JSON.
@@ -56,7 +102,7 @@ Luego, el sistema compara esos síntomas con la data médica y calcula las enfer
 
 ## Metodología aplicada: CRISP-DM
 
-El desarrollo del proyecto se organizó siguiendo la metodología **CRISP-DM**, utilizada en proyectos basados en datos.
+El desarrollo del proyecto se organizó siguiendo la metodología **CRISP-DM**, usada en proyectos basados en datos.
 
 ### 1. Comprensión del problema
 
@@ -143,24 +189,16 @@ SISTEMA INTELIGENTE DE GESTIÓN DE PACIENTES
 
 ### Clases y objetos
 
-El sistema está organizado mediante clases que representan entidades del dominio médico.
-
-Principales clases utilizadas:
+El sistema está organizado mediante clases que representan entidades del dominio médico:
 
 - `Persona`
 - `Paciente`
 - `Doctor`
 - `PacienteCritico`
 - `Monitoreo`
-- `ValidarRango`
 - `TratamientoBase`
-- `TratamientoMedicamento`
-- `TratamientoTerapia`
-- `TratamientoCirugia`
-- `TratamientoFactory`
 - `MotorBayes`
 - `RegistroMedicoCentral`
-- `PersistenciaJSON`
 
 ### Encapsulamiento
 
@@ -175,8 +213,6 @@ Persona
  ├── Paciente
  └── Doctor
 ```
-
-Esto evita duplicar atributos comunes como nombre, apellido y DNI.
 
 ### Herencia múltiple
 
@@ -230,7 +266,7 @@ El patrón Singleton se aplica en el registro médico central, garantizando que 
 
 ## Predicción bayesiana
 
-El sistema utiliza una versión simplificada de **Naive Bayes** para estimar enfermedades probables según los síntomas registrados.
+El sistema utiliza una versión simplificada de Naive Bayes para estimar enfermedades probables según los síntomas registrados.
 
 La idea general es:
 
@@ -241,6 +277,8 @@ P(Enfermedad | Síntomas)
 Esto significa calcular la probabilidad de una enfermedad dado que el paciente presenta ciertos síntomas.
 
 El sistema evalúa las enfermedades disponibles en la data y muestra las más probables ordenadas de mayor a menor probabilidad.
+
+**Importante:** la predicción generada por el sistema es solo una orientación académica y no reemplaza un diagnóstico médico profesional.
 
 ---
 
@@ -344,11 +382,14 @@ El sistema debe mostrar una lista de enfermedades probables según los síntomas
 
 ---
 
-## Autor
+## Autores
 
-**Frank Bustamante**  
+**BUSTAMANTE VELA, Jean Frank**  
+**SALON YNGA, Dangelo Emanuel**  
+**MARREROS CORTEGANA, Miguel Angel**  
+
 Universidad Nacional Toribio Rodríguez de Mendoza de Amazonas  
-Escuela Profesional de Ingeniería en Ciencia de Datos e Inteligencia Artificial
+Escuela Profesional de Ingeniería en Ciencia de Datos e Inteligencia Artificial  
 
 ---
 
