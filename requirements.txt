@@ -1,0 +1,2 @@
+# No se requieren librerías externas.
+# El sistema utiliza únicamente módulos estándar de Python.
